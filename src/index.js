@@ -17,7 +17,7 @@ const PORT = process.env.PORT;
 // Registers a HTTP GET route.
 // ref: https://betterprogramming.pub/video-stream-with-node-js-and-html5-320b3191a6b6
 app.get("/video", (req, res) => {
-  const path = "./videos/SampleVideo_1280x720_1mb.mp4";
+  const path = "./videos/SampleVideo_1280x720_1mb.mp4"; // not from file position but execution position
   fs.stat(path, (err, stats) => {
     if (err) {
       console.error("An error occurred ");

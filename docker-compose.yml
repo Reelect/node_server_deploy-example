@@ -1,0 +1,14 @@
+version: "3"
+services:
+  minivideo:
+    image: minivideo
+    build:
+      context: ./minivideo # microservice를 제작할 폴더 지정
+      dockerfile: Dockerfile
+    container_name: minivideo # 생성될 때 생기는 이름
+    ports:
+      - "4000:80" # 외부 포트:컨테이너 포트
+    environment:
+      - PORT=80
+    restart: "no" # 개발에서는 재시작하지 않게 설정하여 오류가 있는 부분을 확인할수 있도록 한다.
+

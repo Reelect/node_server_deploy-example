@@ -1,19 +1,11 @@
-# Example-1
+# node_server_deploy-example
 
-Example number 1 from Chapter 2 of [Bootstrapping Microservices](https://www.bootstrapping-microservices.com).
+Reference: [Bootstrapping Microservices](https://www.bootstrapping-microservices.com)
 
-You need Node.js installed to run this.
+Present initializing code:
 
-Before running install dependencies:
+    docker-compose up --build
 
-    npm install
+When you off this service:
 
-To start the microservice:
-
-    node index.js
-
-Or 
-
-    npm start
-
-Then point your browser at http://localhost:3000# node_server_deploy-example
+    docker-compose stop && docker-compose down

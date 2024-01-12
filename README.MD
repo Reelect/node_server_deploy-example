@@ -13,6 +13,8 @@ Reference: [Bootstrapping Microservices](https://www.bootstrapping-microservices
 3. Mongo DB 컨테이너
    - 1.의 접속용 컨테이너가 id -> viedo path 형식으로 저장된 데이터를 조회하여, 사용자가 id를 지정해서 쿼리를 보내면, 그에 상응하는 비디오를 2. Storage 컨테이너에 요청하여 비디오를 받아오는 과정 수행
 
+**_Docker compse yaml 파일의 환경변수를 본인의 환경에 맞게 작성 후, 아래의 코드를 실시해야합니다._**
+
 Present initializing code:
 
     docker-compose up --build

@@ -1,5 +1,13 @@
 version: "3"
 services:
+  db:
+    image: mongo:4.2.8
+    container_name: db
+
+    ports:
+      - "4000:27017" # 외부 포트:컨테이너 포트
+    restart: always
+
   azure-storage:
     image: azure-storage
     build:
@@ -7,11 +15,11 @@ services:
       dockerfile: Dockerfile
     container_name: video-storage # 생성될 때 생기는 이름
     ports:
-      - "4000:80" # 외부 포트:컨테이너 포트
+      - "4001:80" # 외부 포트:컨테이너 포트
     environment:
       - PORT=80
-      - STORAGE_ACCOUNT_NAME=<insert your Azure storage account name here>
-      - STORAGE_ACCESS_KEY=<insert your Azure storage account access key here>
+      - STORAGE_ACCOUNT_NAME=<your own account name>
+      - STORAGE_ACCESS_KEY=<your own access key>
 
   minivideo:
     image: minivideo
@@ -20,10 +28,14 @@ services:
       dockerfile: Dockerfile
     container_name: minivideo # 생성될 때 생기는 이름
     ports:
-      - "4001:80" # 외부 포트:컨테이너 포트
+      - "4002:80" # 외부 포트:컨테이너 포트
     environment:
       - PORT=80
+      - DBHOST=mongodb://db:27017
+      - DBNAME=minivideo
       - VIDEO_STORAGE_HOST=video-storage
       - VIDEO_STORAGE_PORT=80
+    depends_on:
+      - db
     restart: "no" # 개발에서는 재시작하지 않게 설정하여 오류가 있는 부분을 확인할수 있도록 한다.
 

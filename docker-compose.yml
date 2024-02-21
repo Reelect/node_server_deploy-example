@@ -21,12 +21,15 @@ services:
       - STORAGE_ACCOUNT_NAME=<your own account name>
       - STORAGE_ACCESS_KEY=<your own access key>
 
-  minivideo:
-    image: minivideo
+  minivideo-dev:
+    image: minivideo-dev
     build:
       context: ./minivideo # microservice를 제작할 폴더 지정
-      dockerfile: Dockerfile
-    container_name: minivideo # 생성될 때 생기는 이름
+      dockerfile: Dockerfile-dev
+    container_name: minivideo-dev-container # 생성될 때 생기는 이름
+    volumes:
+      - /tmp/minivideo/npm-cache:/root/:z
+      - ./minivideo/src:/usr/src/app:z
     ports:
       - "4002:80" # 외부 포트:컨테이너 포트
     environment:

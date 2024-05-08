@@ -26,8 +26,8 @@ services:
       dockerfile: Dockerfile-dev
     container_name: minivideo-dev-container # 생성될 때 생기는 이름
     volumes:
-      - /tmp/minivideo/npm-cache:/root/:z
-      - ./minivideo/src:/usr/src/app:z
+      - /tmp/minivideo/npm-cache:/root/.npm:z
+      - ./minivideo/src:/usr/src/app/src:z
       - ./minivideo/videos:/usr/src/app/videos:z
     ports:
       - "4001:80" # 외부 포트:컨테이너 포트
@@ -55,6 +55,28 @@ services:
       - RABBIT=amqp://guest:guest@rabbit:5672
       - DBHOST=mongodb://db:27017
       - DBNAME=history
+      - NODE_ENV=development
+    depends_on:
+      - db
+      - rabbit
+    restart: "no"
+
+  recommendations:
+    image: recommendations
+    build:
+      context: ./recommendations
+      dockerfile: Dockerfile-dev
+    container_name: recommendations
+    volumes:
+      - /tmp/recommendations/npm-cache:/root/.npm:z
+      - ./recommendations/src:/usr/src/app/src:z
+    ports:
+      - "4003:80"
+    environment:
+      - PORT=80
+      - RABBIT=amqp://guest:guest@rabbit:5672
+      - DBHOST=mongodb://db:27017
+      - DBNAME=recommendations
       - NODE_ENV=development
     depends_on:
       - db

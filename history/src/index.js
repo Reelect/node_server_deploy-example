@@ -1,30 +1,30 @@
 const express = require("express");
 
-function setupHandlers(app) {
-    
-}
+function selfHandlers(app) {}
 
 function startHttpServer() {
-    return new Promise(resolve => {
-        const app = express();
-        setupHandlers(app);
+  return new Promise((resolve, reject) => {
+    const app = express();
+    selfHandlers(app);
 
-        const port = process.env.PORT && parseInt(process.env.PORT) || 3000;
-        app.listen(port, () => {
-            resolve();
-        });
+    const port = (process.env.PORT && parseInt(process.env.PORT)) || 3000;
+    const server = app.listen(port, () => {
+      resolve(server);
     });
+  });
 }
 
 function main() {
-    console.log("Hello world!");
+  console.log("Hello World!");
 
-    return startHttpServer();
+  return startHttpServer();
 }
 
 main()
-    .then(() => console.log("Microservice online."))
-    .catch(err => {
-        console.error("Microservice failed to start.");
-        console.error(err && err.stack || err);
-    });
+  .then(() => {
+    console.log("Microservice started successfully");
+  })
+  .catch((err) => {
+    console.error("Microservice failed to start");
+    console.error((err && err.stack) || err);
+  });

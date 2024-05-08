@@ -1,10 +1,11 @@
 const express = require("express");
 const http = require("http");
 const mongodb = require("mongodb");
+const amqp = require("amqplib");
 
 const app = express();
 
-// check port environment variable
+// check port environment variablecd
 if (!process.env.PORT) {
   throw new Error(
     "Please specify the port number for the HTTP server with the environment variable PORT."
@@ -41,6 +42,32 @@ const VIDEO_STORAGE_HOST = process.env.VIDEO_STORAGE_HOST;
 const VIDEO_STORAGE_PORT = parseInt(process.env.VIDEO_STORAGE_PORT);
 const DBHOST = process.env.DBHOST;
 const DBNAME = process.env.DBNAME;
+
+//
+// Connect to the RabbitMQ server.
+//
+function connectRabbit() {
+  console.log(`Connecting to RabbitMQ server at ${RABBIT}.`);
+
+  return amqp
+    .connect(RABBIT) // Connect to the RabbitMQ server.
+    .then((connection) => {
+      console.log("Connected to RabbitMQ.");
+
+      return connection.createChannel(); // Create a RabbitMQ messaging channel.
+    });
+}
+
+//
+// Send the "viewed" to the history microservice.
+//
+function sendViewedMessage(messageChannel, videoPath) {
+  console.log(`Publishing message on "viewed" queue.`);
+
+  const msg = { videoPath: videoPath };
+  const jsonMsg = JSON.stringify(msg);
+  messageChannel.publish("", "viewed", Buffer.from(jsonMsg)); // Publish message to the "viewed" queue.
+}
 
 console.log(
   `Forwarding video requests to ${VIDEO_STORAGE_HOST}:${VIDEO_STORAGE_PORT}.`
